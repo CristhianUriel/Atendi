@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+    margin:0;
+    font-family: 'Roboto',sans-serif;
+}
+
+.validators {
+    color: red;
+    font-size: 13px;
+    text-align: center;
+}
+#sidebar {
+    width: 250px;
+    min-height: 100vh;
+  }
+  
+  #sidebar .btn-toggle {
+    width: 100%;
+    text-align: left;
+  }
+  .principal-color{
+    background-color: #611232;
+   color: #ffffff;
+}
+.secundario-color{
+    background-color: #a57f2c;
+}
+.custom-nav a {
+    color: #ffffff; /* Cambia el color de las letras (ejemplo: Tomato) */
+    text-decoration: none; /* Elimina el subrayado si es necesario */
+  }
+  
+  .custom-nav a:hover {
+    color: #ffffff; /* Cambia el color al pasar el cursor (ejemplo: OrangeRed) */
+  }
+  

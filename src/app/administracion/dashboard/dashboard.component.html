@@ -1,0 +1,70 @@
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar  secundario-color" style="width: 250px; height: 100vh;">
+    <div class="p-3 ">
+      <div class="px-3 " style="color: #ffffff;">
+        <h5>Atendí</h5>
+      </div>
+      <hr>
+      <!-- Botón de hamburguesa -->
+
+      <div id="navbarSupportedContent">
+        <ul class="nav flex-column custom-nav">
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="/recepcionista" routerLinkActive="active">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class=" content p-0" style="flex-grow: 1;">
+    <div class="container-fluid d-flex p-1  justify-content-between principal-color">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar"
+        aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"> <i class="bi bi-list " style="font-size: 1.4rem;"></i></span>
+      </button>
+
+      <button class="btn " style="color: #ffffff;">Cerrar sesión <i class="bi bi-box-arrow-in-right"
+          style="font-size: 1.4rem;"></i> </button>
+
+    </div>
+
+    <router-outlet></router-outlet>
+
+    <div class="container shadow d-flex justify-content-center border p-3 " style="width: 95%;margin-top: 20px;" >
+      
+        <div class="col-4 ">
+          <select class="form-select  form-select-md" aria-label="medium select example">
+            <option selected>Departamentos</option>
+            <option value="1">Afiliacion</option>
+            <option value="2">Cobranza</option>
+            <option value="3">Three</option>
+  
+          </select>
+        </div>
+        <div class="col-4 ps-3"><select class="form-select  form-select-md " aria-label="medium select example">
+            <option selected>Departamentos</option>
+            <option value="1">Afiliacion</option>
+            <option value="2">Cobranza</option>
+            <option value="3">Three</option>
+  
+          </select>
+        </div>
+        <div class="col-4 ps-3">
+          <button class="btn btn-success ">Generar grafica</button>
+        </div>
+      
+    </div>
+  </div>
+</div>
