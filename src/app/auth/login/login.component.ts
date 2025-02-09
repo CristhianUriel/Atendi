@@ -5,25 +5,25 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  form:FormGroup
+  form: FormGroup
 
-  constructor(private fb:FormBuilder){
+  constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      user: [ '',[Validators.required,Validators.pattern(/^[a-zA-Z0-9]+$/)]],
-      password:['',[Validators.required]]
+      user: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
+      password: ['', [Validators.required]]
     })
   }
- onSubmit(){
-if(this.form.valid){
-  console.log(this.form.value);
-}else{
-  console.log("invalido")
-}
- }
+  onSubmit() {
+    if (this.form.valid) {
+      console.log(this.form.value);
+    } else {
+      console.log("invalido")
+    }
+  }
 }
 

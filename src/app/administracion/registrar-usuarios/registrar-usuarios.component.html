@@ -1,0 +1,111 @@
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar  secundario-color" style="width: 250px; height: 100vh;">
+        <div class="p-3 ">
+            <div class="px-3 " style="color: #ffffff;">
+                <h5>Atendí</h5>
+            </div>
+            <hr >
+            <!-- Botón de hamburguesa -->
+
+            <div id="navbarSupportedContent">
+                <ul class="nav flex-column custom-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" routerLink="/dashboard" routerLinkActive="active">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/registrar" routerLinkActive="active">Registrar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class=" content p-0" style="flex-grow: 1;">
+        <div class="container-fluid d-flex p-1  justify-content-between principal-color">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar"
+                aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> <i class="bi bi-list " style="font-size: 1.4rem;"></i></span>
+            </button>
+
+            <button class="btn " style="color: #ffffff;">Cerrar sesión <i class="bi bi-box-arrow-in-right"
+                    style="font-size: 1.4rem;"></i> </button>
+
+        </div>
+
+        <router-outlet></router-outlet>
+
+        <div class="container d-flex shadow-hover justify-content-center border p-3"
+            style="max-width: 95%; margin-top: 20px;">
+            <div class="w-100">
+                <h6>Formulario de registro</h6>
+
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <!-- Campo de usuario -->
+                    <div class="row">
+                        <div class="mb-3 col-md-6 col-sm-12">
+                            <label for="user" class="form-label">Usario</label>
+                            <input type="text" class="form-control border-dark" id="user" placeholder="Nombre de usuario"
+                                formControlName="user" required>
+                            <div class="validators" *ngIf="form.get('user')?.invalid && form.get('user')?.touched">
+                                <small *ngIf="form.get('user')?.hasError('required')">El nombre de usuario es
+                                    obligatorio</small>
+                                <small *ngIf="form.get('user')?.hasError('pattern')">El nombre de usuario solo debe
+                                    contener números o letras</small>
+                            </div>
+                        </div>
+
+                        <!-- Campo de contraseña -->
+                        <div class="mb-3 col-md-6 col-sm-12">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control border-dark" id="password" placeholder="Contraseña"
+                                formControlName="password" required>
+                            <div class="validators"
+                                *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                                <small *ngIf="form.get('password')?.hasError('required')">La contraseña es
+                                    obligatoria</small>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-6 col-sm-12">
+                            <label for="name" class="form-label">Nombre completo</label>
+                            <input type="text" class="form-control border-dark" id="name" placeholder="Nombre completo"
+                                formControlName="name" required>
+                            <div class="validators" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+                                <small *ngIf="form.get('name')?.hasError('required')">El nombre es obligatorio</small>
+                                <small *ngIf="form.get('name')?.hasError('pattern')">El nombre solo debe contener
+                                    letras</small>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="role" class="form-label">Rol</label>
+                            <select class="form-select border-dark" id="role" formControlName="role"  required>
+                              <option value="" disabled selected>Seleccione un rol</option>
+                              <option value="recepcion" >Recepción</option>
+                              <option value="ventanilla" >Ventanilla</option>
+                              <option value="mesa" >Mesa</option>
+                              <option value="mesa" >Administrador</option>
+                            </select>
+                            <div class="validators" *ngIf="form.get('role')?.invalid && form.get('role')?.touched">
+                              <small *ngIf="form.get('role')?.hasError('required')">El rol es obligatorio</small>
+                            </div>
+                          </div>
+
+                        <!-- Botón de envío -->
+                        <div class="d-grid mt-2">
+                            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Enviar</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

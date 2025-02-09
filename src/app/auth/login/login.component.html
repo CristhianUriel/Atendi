@@ -9,12 +9,12 @@
     <div class="col-md-6 col-sm-12 text-dark d-flex align-items-center justify-content-center full-height" >
     
 
-      <div class="bg-white shadow rounded p-4 w-100" style="max-width: 400px;">
+      <div class="bg-white shadow-hover rounded p-4 w-100" style="max-width: 400px;">
         <h2 class="text-center mb-4">Iniciar Sesión</h2>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <!-- Campo de texto -->
           <div class="mb-3">
-            <label for="user" class="form-label">Email address</label>
+            <label for="user" class="form-label">Nombre de usuario</label>
             <input type="text" class="form-control" id="user" placeholder="Nombre de usuario" formControlName="user" required>
           </div>
           <div class="validators" *ngIf="form.get('user')?.invalid && form.get('user')?.touched">
@@ -23,7 +23,7 @@
           </div>
           <!-- Campo de contraseña -->
           <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label">Contraseña</label>
           <input type="password" class="form-control" id="password" placeholder="Contraseña" formControlName="password" required>
           </div>
           <div class="validators" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
