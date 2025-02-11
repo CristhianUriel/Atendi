@@ -17,7 +17,7 @@
                         <a class="nav-link" routerLink="/registrar" routerLinkActive="active">Registrar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
+                        <a class="nav-link" routerLink="/sucursal" href="#">Registrar departamentos y procesos</a>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -90,7 +90,7 @@
                               <option value="recepcion" >Recepción</option>
                               <option value="ventanilla" >Ventanilla</option>
                               <option value="mesa" >Mesa</option>
-                              <option value="mesa" >Administrador</option>
+                           
                             </select>
                             <div class="validators" *ngIf="form.get('role')?.invalid && form.get('role')?.touched">
                               <small *ngIf="form.get('role')?.hasError('required')">El rol es obligatorio</small>

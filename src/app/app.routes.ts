@@ -27,7 +27,7 @@ export const routes: Routes = [
         path:'registrar', component: RegistrarUsuariosComponent
     },
     {
-        path:'sucursal', component:SucursalComponent
+        path:'departamentos', component:SucursalComponent
     },
     { path: '**', component: HomeComponent },
 ];
