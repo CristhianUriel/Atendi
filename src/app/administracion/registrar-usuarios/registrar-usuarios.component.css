@@ -1,0 +1,25 @@
+.table td {
+    white-space: nowrap;         /* Evita que el texto se quiebre en múltiples líneas */
+    overflow: hidden;            /* Oculta el texto que desborda */
+    text-overflow: ellipsis;     /* Muestra puntos suspensivos (...) cuando el texto es demasiado largo */
+}
+
+.table th {
+    white-space: nowrap;         /* Asegura que los encabezados de la tabla no se quiebren */
+}
+.table td, .table th {
+    max-width: 200px;  /* Ajusta según sea necesario */
+    white-space: nowrap;  /* Evita el salto de línea */
+    overflow: hidden;   /* Oculta el contenido que se desborda */
+    text-overflow: ellipsis; /* Puntos suspensivos */
+}
+.shadow-hover {
+    border: rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.1s ease-in-out;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Sombra inicial suave */
+  }
+  
+  .shadow-hover:hover {
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.7); /* Sombra más oscura e intensa al hacer hover */
+  }
+  

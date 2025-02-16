@@ -6,6 +6,7 @@ import { DashboardComponent } from './administracion/dashboard/dashboard.compone
 import { RegistrarUsuariosComponent } from './administracion/registrar-usuarios/registrar-usuarios.component';
 import { SucursalComponent } from './sucursal/sucursal.component';
 import { authGuardGuard } from './guard/auth-guard.guard';
+import { AtencionComponent } from './atencion/atencion/atencion.component';
 
 export const routes: Routes = [
     {
@@ -21,7 +22,7 @@ export const routes: Routes = [
     {
         path:'recepcionista', component: RecepcionistaComponent,
         canActivate: [authGuardGuard],
-        data: {role: 'recepcionista'}
+        data: {role: 'recepcion'}
     },
     {
         path:'dashboard', component: DashboardComponent,
@@ -37,6 +38,10 @@ export const routes: Routes = [
         path:'departamentos', component:SucursalComponent,
         canActivate: [authGuardGuard],
         data: {role: 'administrador'}
+    },{
+        path: 'atencion', component:AtencionComponent,
+        canActivate: [authGuardGuard],
+        data:{role: 'ventanilla'}
     },
     { path: '**', component: HomeComponent },
 ];

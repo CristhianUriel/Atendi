@@ -27,8 +27,8 @@ export class AuthServiceService {
     return this.http.post(url, body, { headers });
   }
 
-   geToken(): string | null {
-    return localStorage.getItem('jwtToken');
+   getToken(): string | null {
+    return localStorage.getItem('token');
    }
    getUserRole(): string | null {
     const token = localStorage.getItem('token');

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
+import {jwtDecode} from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -24,30 +25,50 @@ export class LoginComponent {
   }
   onSubmit() {
     if (this.form.valid) {
-    const  username = this.form.value.user;
-    const  password= this.form.value.password;
-    console.log("datos ", this.form.value);
-    this.authService.login(username, password, this.HospitalId).subscribe({
-      next: (response) => {
-        console.log('Respuesta completa del backend:', response);
-        
-        if (!response || !response.token) {
-          console.error('No se recibió un token en la respuesta del servidor.');
-          return;
+      const username = this.form.value.user;
+      const password = this.form.value.password;
+
+      this.authService.login(username, password, this.HospitalId).subscribe({
+        next: (response) => {
+          if (!response || !response.token) {
+            console.error('No se recibió un token en la respuesta del servidor.');
+            return;
+          }
+
+          localStorage.setItem('token', response.token);
+
+          try {
+            const decodedToken: any = jwtDecode(response.token);
+            const userRole = decodedToken?.role;
+            console.log('Token decodificado:', decodedToken);
+
+            // 🔀 Redirigir según el rol
+            switch (userRole) {
+              case 'administrador':
+                this.router.navigate(['/dashboard']);
+                break;
+              case 'recepcion':
+                this.router.navigate(['/recepcionista']);
+                break;
+              default:
+                this.router.navigate(['/home']); // Si no tiene un rol válido
+                break;
+            }
+
+          } catch (error) {
+            console.error('Error al decodificar el token:', error);
+            this.router.navigate(['/home']);
+          }
+        },
+        error: (err) => {
+          console.error('Error en el login:', err);
         }
-    
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/dashboard']);
-      },
-      error: (err) => {
-        console.error('Error en el login:', err);
-      }
-    });
-    
-    
+      });
+
     } else {
-      console.log("formulario invalido")
+      console.log('Formulario inválido');
     }
   }
+  
 }
 
