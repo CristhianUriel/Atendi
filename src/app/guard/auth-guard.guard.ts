@@ -5,6 +5,12 @@ import { inject, Inject } from '@angular/core';
 export const authGuardGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthServiceService)
   const requiredRole = route.data['role'];  // Obtén el rol requerido de las rutas
+  const tokenIsExpired = auth.isTokenExpired();
+
+  if(tokenIsExpired){
+    window.location.href = '/login';
+    return false;
+  }
   const userRole = auth.getUserRole();  // Obtén el rol del usuario desde el token
 
   // Verifica si el rol del usuario existe y si coincide con el rol requerido

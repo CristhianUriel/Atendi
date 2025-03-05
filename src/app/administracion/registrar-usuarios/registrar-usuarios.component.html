@@ -11,16 +11,21 @@
             <div id="navbarSupportedContent">
                 <ul class="nav flex-column custom-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" routerLink="/dashboard" routerLinkActive="active">Inicio</a>
+                        <a class="nav-link active" routerLink="/dashboard" routerLinkActive="active"><i
+                                class="bi bi-house-door-fill fs-5"></i> Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/registrar" routerLinkActive="active">Registrar</a>
+                        <a class="nav-link" routerLink="/registrar" routerLinkActive="active"><i
+                                class="bi bi-person-fill-add fs-5"></i> Registrar Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/departamentos" href="#">Registrar departamentos y procesos</a>
+                        <a class="nav-link" routerLink="/departamentos" href="#"><i
+                                class="bi bi-file-earmark-plus-fill fs-5"></i> Registrar procesos , ventanillas y
+                            departamentos</a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" routerLink="/departamentos" href="#"><i
+                                class="bi bi-person-badge-fill fs-5"></i> Registrar ventanilla</a>
                     </li>
                 </ul>
             </div>
@@ -45,22 +50,24 @@
         <div class="container-fluid  mt-1">
             <h2 class="text-center">Usuarios Registrados</h2>
             <!-- Button trigger modal -->
-           <div class="container text-center">
-            <div class="row">
-                <div class="col-md-4">
-                    <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="bi bi-person-fill-add fs-4"></i> Agregar usuario
-                    </button>
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            <i class="bi bi-person-fill-add fs-4"></i> Agregar usuario
+                        </button>
+                    </div>
+                    <div class="col-md-4 offset-md-4">
+                        <div class="mb-3 ">
+                            <input type="text" id="search" class="form-control border-dark" [(ngModel)]="searchText"
+                                placeholder="Buscar por nombre o usuario">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 offset-md-4">
-                    <div class="mb-3 ">
-                    <input type="text" id="search" class="form-control border-dark" [(ngModel)]="searchText"
-                        placeholder="Buscar por nombre o usuario">
-                </div></div>
-              </div>
-            
-            
-           </div>
+
+
+            </div>
 
 
             <!-- Modal -->
@@ -77,15 +84,17 @@
                                 <!-- Campo de usuario -->
                                 <div class="row">
                                     <div class="mb-3 col-md-6 col-sm-12">
-                                        <label for="user" class="form-label">Usario</label>
-                                        <input type="text" class="form-control border-dark" id="user"
-                                            placeholder="Nombre de usuario" formControlName="user" required>
+                                        <label for="userName" class="form-label">Usario</label>
+                                        <input type="text" class="form-control border-dark" id="userName"
+                                            placeholder="Nombre de usuario" formControlName="userName" required>
                                         <div class="validators"
-                                            *ngIf="form.get('user')?.invalid && form.get('user')?.touched">
-                                            <small *ngIf="form.get('user')?.hasError('required')">El nombre de usuario
+                                            *ngIf="form.get('userName')?.invalid && form.get('userName')?.touched">
+                                            <small *ngIf="form.get('userName')?.hasError('required')">El nombre de
+                                                usuario
                                                 es
                                                 obligatorio</small>
-                                            <small *ngIf="form.get('user')?.hasError('pattern')">El nombre de usuario
+                                            <small *ngIf="form.get('userName')?.hasError('pattern')">El nombre de
+                                                usuario
                                                 solo debe
                                                 contener números o letras</small>
                                         </div>
@@ -103,22 +112,22 @@
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6 col-sm-12">
-                                        <label for="name" class="form-label">Nombre completo</label>
-                                        <input type="text" class="form-control border-dark" id="name"
-                                            placeholder="Nombre completo" formControlName="name" required>
+                                        <label for="nombre" class="form-label">Nombre completo</label>
+                                        <input type="text" class="form-control border-dark" id="nombre"
+                                            placeholder="Nombre completo" formControlName="nombre" required>
                                         <div class="validators"
-                                            *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
-                                            <small *ngIf="form.get('name')?.hasError('required')">El nombre es
+                                            *ngIf="form.get('nombre')?.invalid && form.get('nombre')?.touched">
+                                            <small *ngIf="form.get('nombre')?.hasError('required')">El nombre es
                                                 obligatorio</small>
-                                            <small *ngIf="form.get('name')?.hasError('pattern')">El nombre solo debe
+                                            <small *ngIf="form.get('nombre')?.hasError('pattern')">El nombre solo debe
                                                 contener
                                                 letras</small>
                                         </div>
                                     </div>
+                                    <!--Rol-->
                                     <div class="col-12 col-md-6">
-                                        <label for="role" class="form-label">Rol</label>
-                                        <select class="form-select border-dark" id="role" formControlName="role"
-                                            required>
+                                        <label for="rol" class="form-label">Rol</label>
+                                        <select class="form-select border-dark" id="rol" formControlName="rol" required>
                                             <option value="" disabled selected>Seleccione un rol</option>
                                             <option value="recepcion">Recepción</option>
                                             <option value="ventanilla">Ventanilla</option>
@@ -126,16 +135,51 @@
 
                                         </select>
                                         <div class="validators"
-                                            *ngIf="form.get('role')?.invalid && form.get('role')?.touched">
-                                            <small *ngIf="form.get('role')?.hasError('required')">El rol es
+                                            *ngIf="form.get('rol')?.invalid && form.get('rol')?.touched">
+                                            <small *ngIf="form.get('rol')?.hasError('required')">El rol es
                                                 obligatorio</small>
+                                        </div>
+                                    </div>
+                                    <!--departamento-->
+                                    <div class="col-12 col-md-12">
+                                        <label for="role" class="form-label">Departamento</label>
+                                        <select class="form-select border-dark" id="departamento"
+                                            formControlName="departamentoId" (change)="onDepartamentoChange($event)"
+                                            required>
+                                            <option value="" disabled selected>Seleccione un departamento</option>
+                                            <option *ngFor="let dep of departamentos" [value]="dep.id">{{ dep.nombre }}
+                                            </option>
+                                        </select>
+                                        <div class="validators"
+                                            *ngIf="form.get('departamentoId')?.invalid && form.get('departamentoId')?.touched">
+                                            <small *ngIf="form.get('departamentoId')?.hasError('required')">El
+                                                departamento es obligatorio</small>
+                                        </div>
+                                    </div>
+
+
+                                    <!---Ventanillas-->
+                                    <div class="col-12 col-md-12">
+                                        <label for="ventanilla" class="form-label">Ventanilla</label>
+                                        <select class="form-select border-dark" id="ventanilla"
+                                            formControlName="ventanillaId" required>
+                                            <option value="" disabled selected>Seleccione una ventanilla</option>
+                                            <option *ngFor="let ventanilla of ventanillasPorDepartamento"
+                                                [value]="ventanilla.id">
+                                                {{ ventanilla.nombre }}
+                                            </option>
+                                        </select>
+                                        <div class="validators"
+                                            *ngIf="form.get('ventanillaId')?.invalid && form.get('ventanillaId')?.touched">
+                                            <small *ngIf="form.get('ventanillaId')?.hasError('required')">La ventanilla
+                                                es obligatoria</small>
                                         </div>
                                     </div>
 
                                     <!-- Botón de envío -->
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
+                                            data-bs-dismiss="modal">Cerrar</button>
                                         <div class="d-grid mt-2">
                                             <button type="submit" class="btn btn-primary"
                                                 [disabled]="form.invalid">Enviar</button>
@@ -155,22 +199,25 @@
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>
+                            <th>Nombre completo</th>
                             <th>Usuario</th>
+                            <th>Contraseña</th>
                             <th>Rol</th>
                             <th colspan="2">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                            *ngFor="let usuario of filteredUsuarios  | paginate: { itemsPerPage: 5, currentPage: page }; let i = index">
+                            *ngFor="let usuario of filteredUsuarios  | paginate: { itemsPerPage: 5, currentPage: page }; let i = index" id="p">
                             <td>{{ i + 1 }}</td>
                             <td>{{ usuario.nombre }}</td>
                             <td>{{ usuario.userName }}</td>
+                            <td>{{usuario.password}}</td>
                             <td>{{ usuario.rol }}</td>
-                            <td> <button type="button" class="btn btn-warning"><i
-                                        class="bi bi-pencil-square" (click)="update(usuario.id)"></i></button></td>
-                            <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3-fill"></i></button>
+                            <td></td>
+                            <td> <button type="button" class="btn btn-warning"><i class="bi bi-pencil-square"
+                                        (click)="update(usuario.id)"></i></button></td>
+                            <td><button type="button" class="btn btn-danger" (click)="eliminarUser(usuario.id)"><i class="bi bi-trash3-fill"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -182,6 +229,18 @@
             <!-- Paginador de ngx-pagination con Bootstrap -->
             <pagination-controls class="d-flex justify-content-center" (pageChange)="page = $event">
             </pagination-controls>
+        </div>
+        <!-- Toast con *ngIf -->
+        <div *ngIf="showToast" class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Éxito</strong>
+                    <button type="button" class="btn-close" (click)="showToast = false" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{toastMessage}}
+                </div>
+            </div>
         </div>
 
     </div>

@@ -1,5 +1,34 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { AuthServiceService } from '../services/auth-service.service';
-export const jwtInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
-  return next(req);
+import { Observable, throwError } from 'rxjs';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+export const jwtInterceptorInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
+  const authService = inject(AuthServiceService);
+  const router = inject(Router);
+  const excludedUrls = ['http://localhost:8080/api/auth/login']; // Rutas excluidas
+
+  // Verifica si la solicitud es para el login
+  if (excludedUrls.some(url => req.url.includes(url))) {
+    return next(req); // Sin cambios, sigue con la solicitud
+  }
+
+  // Obtener el token de localStorage o donde lo tengas almacenado
+  const token = localStorage.getItem('token');
+
+  // Si hay un token, clonar la solicitud y agregar el header Authorization
+  if (token) {
+    if (authService.isTokenExpired()) {
+      localStorage.removeItem('token');
+      router.navigate(['/login']);
+      return throwError(() => new Error('Token caducado'));
+    }
+    const authReq = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
+    });
+    return next(authReq); // Retorna la solicitud modificada
+  }
+
+  // Si no hay token, continuar con la solicitud original
+  return next(req); 
 };

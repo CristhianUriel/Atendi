@@ -44,7 +44,7 @@ export class LoginComponent {
 
             // 🔀 Redirigir según el rol
             switch (userRole) {
-              case 'administrador':
+              case 'ADMINISTRADOR':
                 this.router.navigate(['/dashboard']);
                 break;
               case 'recepcion':

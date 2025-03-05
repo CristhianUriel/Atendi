@@ -5,22 +5,27 @@
             <div class="px-3 " style="color: #ffffff;">
                 <h5>Atendí</h5>
             </div>
-            <hr >
+            <hr>
             <!-- Botón de hamburguesa -->
 
             <div id="navbarSupportedContent">
                 <ul class="nav flex-column custom-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" routerLink="/dashboard" routerLinkActive="active">Inicio</a>
+                        <a class="nav-link active" routerLink="/dashboard" routerLinkActive="active"><i
+                                class="bi bi-house-door-fill fs-5"></i> Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/registrar" routerLinkActive="active">Registrar</a>
+                        <a class="nav-link" routerLink="/registrar" routerLinkActive="active"><i
+                                class="bi bi-person-fill-add fs-5"></i> Registrar Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/departamentos" href="#">Registrar departamentos y procesos</a>
+                        <a class="nav-link" routerLink="/departamentos" href="#"><i
+                                class="bi bi-file-earmark-plus-fill fs-5"></i> Registrar procesos , ventanillas y
+                            departamentos</a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        <a class="nav-link" routerLink="/departamentos" href="#"><i
+                                class="bi bi-person-badge-fill fs-5"></i> Registrar ventanilla</a>
                     </li>
                 </ul>
             </div>
@@ -29,6 +34,7 @@
 
     <!-- Content Area -->
     <div class=" content p-0" style="flex-grow: 1;">
+
         <div class="container-fluid d-flex p-1  justify-content-between principal-color">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar"
                 aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,43 +48,449 @@
 
         <router-outlet></router-outlet>
 
-        <div class="container d-flex shadow-hover justify-content-center border p-3"
-            style="max-width: 95%; margin-top: 20px;">
-            <div class="w-100">
-                <h6>Formulario de registro</h6>
-                <form [formGroup]="departamentoForm" (ngSubmit)="enviarFormulario()">
-                    <div class="row justify-content-center">
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre del
-                                Departamento</label>
-                            <input type="text" id="nombre" class="form-control"
-                                formControlName="nombre" placeholder="Ingrese el nombre del departamento">
+
+        <div class="container-fluid  mt-1">
+            <h2 class="text-center">Formularios de registro</h2>
+            <div class="container-fluid">
+                <p><strong>Nota:</strong>Primero, es necesario registrar el departamento y las ventanillas antes de
+                    proceder con la generación de los departamentos.</p>
+            </div>
+            <!-- Button trigger modal -->
+            <div class="container text-center">
+                <!--  <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            <i class="bi bi-person-fill-add fs-4"></i> Agregar usuario
+                        </button>
+                    </div>
+                   
+                    <div class="col-md-4 offset-md-4">
+                        <div class="mb-3 ">
+                            <input type="text" id="search" class="form-control border-dark" [(ngModel)]="searchText"
+                        placeholder="Buscar por nombre o usuario"> 
+                        </div>
+                    </div>
+                </div>
+-->
+
+            </div>
+            <!-- Modal departamento -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog  modal-xl modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario de registro</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="departamentoForm" (ngSubmit)="crearDepartamento()">
+                                <div class="row justify-content-center">
+                                    <div class="mb-3 col-12">
+                                        <label for="nombre" class="form-label">Nombre del Departamento</label>
+                                        <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                                            placeholder="Ingrese el nombre del departamento">
+                                    </div>
+
+                                    <div class="col-6 border">
+                                        <div class="form-check" *ngFor="let proceso of filteredProcesos">
+                                            <input class="form-check-input" type="checkbox" [value]="proceso.id"
+                                                [checked]="isOperacionSelected(proceso.id)"
+                                                (change)="onCheckboxChange($event, 'operacionesIds')">
+                                            <label class="form-check-label">
+                                                {{ proceso.nombre }}
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-6 border">
+                                        <div class="form-check" *ngFor="let ventanilla of filteredVentanillas">
+                                            <input class="form-check-input" type="checkbox" [value]="ventanilla.id"
+                                                [checked]="isVentanillaSelected(ventanilla.id)"
+                                                (change)="onCheckboxChange($event, 'ventanillasIds')">
+                                            <label class="form-check-label">
+                                                {{ ventanilla.nombre }}
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-success"
+                                            [disabled]="!departamentoForm.valid">Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+
+
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Procesos</label>
+                    </div>
 
-                            <!-- 📌 Agregamos 'formArrayName="procesos"' para que Angular reconozca el FormArray -->
-                            <div class="process-container overflow-auto border rounded p-2"
-                                formArrayName="procesos">
-                                <div *ngFor="let procesoCtrl of procesos.controls; let i = index"
-                                    class="input-group mb-2">
-                                    <!-- 📌 Se usa 'formControlName' correctamente -->
-                                    <input type="text" class="form-control"
-                                        [formControlName]="i" placeholder="Nombre del proceso">
-                                    <button type="button" class="btn btn-danger"
-                                        (click)="eliminarProceso(i)"><i class="bi bi-trash-fill"></i></button>
+                </div>
+            </div>
+            <!---Modal 2 proceso-->
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario de registro</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="procesosForm" (ngSubmit)="enviarFormulario()">
+                                <div class="row justify-content-center">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre del
+                                            Departamento</label>
+                                        <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                                            placeholder="Ingrese el nombre del proceso">
+                                    </div>
+
+
+
+                                    <button type="submit" class="btn btn-success"
+                                        [disabled]="!procesosForm.valid">Guardar</button>
                                 </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!---Modal 3 ventanilla-->
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario de registro</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="ventanillaForm" (ngSubmit)="registrarVentanillas()">
+                                <div class="row justify-content-center">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre del
+                                            Departamento</label>
+                                        <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                                            placeholder="Ingrese el nombre del ventanilla">
+                                    </div>
+                                    <button type="submit" class="btn btn-success"
+                                        [disabled]="!ventanillaForm.valid">Guardar</button>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!--Modales de actualizacion 1 modal proceso-->
+            <div class="modal fade" id="exampleModalUpdate1" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario de actualización</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="procesosForm">
+                                <div class="row justify-content-center">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre del
+                                            Departamento</label>
+                                        <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                                            placeholder="Ingrese el nombre del proceso">
+                                    </div>
+                                    <button type="submit" class="btn btn-success" [disabled]="!procesosForm.valid"
+                                        (click)="actualizarProceso()">Guardar</button>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!--Modal update ventanilla-->
+            <div class="modal fade" id="exampleModalUpdate2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario de registro</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="ventanillaForm2">
+                                <div class="row justify-content-center">
+                                  <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre del Departamento</label>
+                                    <input
+                                      type="text"
+                                      id="nombre"
+                                      class="form-control"
+                                      formControlName="nombre"
+                                      placeholder="Ingrese el nombre de la ventanilla"
+                                    />
+                                  </div>
+                              
+                                  <!-- Checkbox para 'activo' -->
+                                  <div class="mb-3">
+                                    <label for="activo" class="form-label">Activo</label>
+                                    <input
+                                      type="checkbox"
+                                      id="activo"
+                                      class="form-check-input"
+                                      formControlName="activo" 
+                                    />
+                                  </div>
+                              
+                                  <button
+                                    type="submit"
+                                    class="btn btn-success"
+                                    [disabled]="!ventanillaForm2.valid"
+                                    (click)="actualizarVentanilla()"
+                                  >
+                                    Guardar
+                                  </button>
+                                </div>
+                              </form>
+                              
+                              
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div role="tabpanel border">
+                <!-- Nav tabs (botones en horizontal) -->
+                <ul class="nav nav-tabs" id="myTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#home" role="tab">Registrar procesos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#profile" role="tab">Registrar ventanillas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#messages" role="tab">Registrar departamentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#settings" role="tab">Settings</a>
+                    </li>
+                </ul>
+
+
+                <div class="tab-content mt-3 ">
+                    <!-- Pocresos -->
+                    <div class="tab-pane fade show active" id="home" role="tabpanel">
+                        <!----Contenido de la tabla-->
+                        <div class=" shadow-hover">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <button type="button" class="btn btn-primary mx-3 my-2" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal2">
+                                        <i class="bi bi-person-fill-add fs-5"></i> Agregar procesos
+                                    </button>
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-center">
+                                    <div class="col-5"><input type="text" id="search"
+                                            class="form-control border-dark me-2" [(ngModel)]="searchTextP"
+                                            placeholder="Buscar por nombre"></div>
+
+                                    <!-- Botón para actualizar datos -->
+                                    <button type="button" class="btn btn-primary" (click)="actualizarDatos()">
+                                        <i class="bi bi-arrow-clockwise"></i> Actualizar
+                                    </button>
+                                </div>
+
+
+                            </div>
+                            <!--Tabla procesos-->
+                            <table class="table table-striped table-bordered ">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Prcesos</th>
+
+
+                                        <th colspan="2">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let procesos of filteredProcesos  | paginate: { id: 'procesos' ,itemsPerPage: 5, currentPage: page }; let i = index">
+
+                                        <td>{{i + 1 + (page - 1) * 5}}</td>
+                                        <td>{{procesos.nombre}}</td>
+
+                                        <td> <button type="button" class="btn btn-warning"
+                                                (click)="ModalActualizarProceso(procesos)" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalUpdate1"><i
+                                                    class="bi bi-pencil-square"></i></button></td>
+                                        <td><button type="button" class="btn btn-danger"
+                                                (click)="eliminarPro(procesos.id)"><i
+                                                    class="bi bi-trash3-fill"></i></button>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <pagination-controls class="d-flex justify-content-center" id="procesos"
+                                (pageChange)="page = $event">
+                            </pagination-controls>
+                        </div>
+                        <!-- Paginador de ngx-pagination con Bootstrap -->
+
+                    </div>
+                    <!--ventanillas-->
+                    <div class="tab-pane fade" id="profile" role="tabpanel">
+                        <!----Contenido de la tabla-->
+                        <div class=" shadow-hover">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <button type="button" class="btn btn-primary mx-3 my-2" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal3">
+                                        <i class="bi bi-person-fill-add fs-5"></i> Agregar ventanilla
+                                    </button>
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-center">
+                                    <div class="col-5"><input type="text" id="search"
+                                            class="form-control border-dark me-2" [(ngModel)]="searchTextV"
+                                            placeholder="Buscar por nombre"></div>
+
+                                    <!-- Botón para actualizar datos -->
+                                    <button type="button" class="btn btn-primary" (click)="actualizarDatos()" >
+                                        <i class="bi bi-arrow-clockwise"></i> Actualizar
+                                    </button>
+                                </div>
+
+
                             </div>
 
-                            <button type="button" class="btn btn-primary mt-2"
-                                (click)="agregarProceso()">Agregar Proceso</button>
-                        </div>
 
-                        <button type="submit" class="btn btn-success"
-                            [disabled]="!departamentoForm.valid">Guardar</button>
+                            <table class="table table-striped table-bordered ">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Ventanillas</th>
+
+                                        <th colspan="1">Asignar</th>
+                                        <th colspan="2">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let ventanillas of filteredVentanillas | paginate: { id: 'ventanilla', itemsPerPage: 5, currentPage: pagev }; let i = index">
+
+                                        <td>{{i + 1 + (pagev - 1) * 5}}</td>
+                                        <td>{{ventanillas.nombre}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td> <button type="button" class="btn btn-warning" (click)="modalActualizarVentanilla(ventanillas)" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModalUpdate2" ><i
+                                                    class="bi bi-pencil-square"></i></button></td>
+                                        <td><button type="button" class="btn btn-danger"
+                                                (click)="eliminarVe(ventanillas.id)"><i
+                                                    class="bi bi-trash3-fill"></i></button>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- Paginador de ngx-pagination con Bootstrap -->
+                            <pagination-controls class="d-flex justify-content-center" id="ventanilla"
+                                (pageChange)="pagev = $event">
+                            </pagination-controls>
+                        </div>
                     </div>
-                </form>
+                    <!--Departamentos-->
+                    <div class="tab-pane fade" id="messages" role="tabpanel">
+                        <div class=" shadow-hover">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <button type="button" class="btn btn-primary mx-3 my-2" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                        <i class="bi bi-person-fill-add fs-5"></i> Agregar departamento
+                                    </button>
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-center">
+                                    <div class="col-5"><input type="text" id="search"
+                                            class="form-control border-dark me-2" [(ngModel)]="searchTextD"
+                                            placeholder="Buscar por nombre"></div>
+
+                                    <!-- Botón para actualizar datos -->
+                                    <button type="button" class="btn btn-primary" (click)="actualizarDatosD()">
+                                        <i class="bi bi-arrow-clockwise"></i> Actualizar
+                                    </button>
+                                </div>
+
+
+                            </div>
+                            <!-- Botón para actualizar datos -->
+
+                            <table class="table table-striped table-bordered ">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Departamentos</th>
+                                        <th>Ventanillas asignadas</th>
+
+                                        <th colspan="2">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let departamentos of filteredDepartamento | paginate: { id: 'departamentos',itemsPerPage: 5, currentPage: pageD }; let i = index; ">
+
+                                        <td>{{i+1+(pageD-1)*5}}</td>
+                                        <td>{{departamentos.nombre}}</td>
+                                        <td>{{ getNombresVentanillas(departamentos) }}</td>
+                                        <td> <button type="button" class="btn btn-warning"><i
+                                                    class="bi bi-pencil-square"></i></button></td>
+                                        <td><button type="button" class="btn btn-danger"
+                                                (click)="eliminarDe(departamentos.id)"><i
+                                                    class="bi bi-trash3-fill"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- Paginador de ngx-pagination con Bootstrap -->
+                            <pagination-controls class="d-flex justify-content-center" id="departamentos"
+                                (pageChange)="pageD = $event">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="settings" role="tabpanel">Contenido de Settings</div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Toast con *ngIf -->
+        <div *ngIf="showToast" class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Éxito</strong>
+                    <button type="button" class="btn-close" (click)="showToast = false" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{toastMessage}}
+                </div>
             </div>
         </div>
 

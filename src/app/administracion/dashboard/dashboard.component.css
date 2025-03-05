@@ -1,6 +1,4 @@
-/* Asegúrate de que el sidebar se colapse en pantallas pequeñas */
-
-  .collapse.show {
+.collapse.show {
     display: block !important;
   }
   

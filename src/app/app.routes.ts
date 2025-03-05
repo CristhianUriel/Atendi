@@ -27,21 +27,20 @@ export const routes: Routes = [
     {
         path:'dashboard', component: DashboardComponent,
         canActivate: [authGuardGuard],
-        data: {role: 'administrador'}
+        data: {role: 'ADMINISTRADOR'}
     },
     {
         path:'registrar', component: RegistrarUsuariosComponent,
         canActivate: [authGuardGuard],
-        data: {role: 'administrador'}
+        data: {role: 'ADMINISTRADOR'}
     },
     {
         path:'departamentos', component:SucursalComponent,
         canActivate: [authGuardGuard],
-        data: {role: 'administrador'}
+        data: {role: 'ADMINISTRADOR'}
     },{
-        path: 'atencion', component:AtencionComponent,
-        canActivate: [authGuardGuard],
-        data:{role: 'ventanilla'}
+        path: 'ventanilla', component:AtencionComponent,
+       
     },
     { path: '**', component: HomeComponent },
 ];

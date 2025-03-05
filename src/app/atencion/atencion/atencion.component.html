@@ -1,1 +1,57 @@
-<p>atencion works!</p>
+<div class="d-flex flex-column vh-100">
+    <!-- Header -->
+    <header class="nav-recep text-white p-2">
+        <div class="container">
+            <h1 class="h3">Atendí</h1>
+        </div>
+      
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="main-content flex-grow-1 d-flex border">
+        <div class="container-fluid d-flex flex-column flex-grow-1">
+            <div class="container-fluid border flex-grow-1 d-flex">
+                <div class="row flex-grow-1 w-100">
+                    <!-- Tabla de usuarios -->
+                    <div class="col-9 border text-start d-flex flex-column">
+                        <h6 class="mt-2">Selecciona un departamento para mostrar los procesos</h6>
+                        <div class="shadow-hover flex-grow-1">
+                            <table class="table table-striped table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="w-75">Procesos por atender</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Ejemplo de proceso</td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-success">
+                                                <i class="bi bi-check-circle-fill"></i> Aceptar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls></pagination-controls>
+                        </div>
+                    </div>
+
+                    <!-- Proceso Atendiendo -->
+                    <div class="col-3 border d-flex flex-column align-items-center justify-content-center text-center p-3">
+                        <h5>Proceso Atendiendo</h5>
+                        <p>Aquí se mostrará el proceso que estás atendiendo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer: Se mantiene abajo con mt-auto -->
+    <footer class="nav-recep text-white text-center p-3 mt-auto">
+        <div class="container">
+            <p class="mb-0">© 2025 Atendí. Sistema para generación de turnos de la Subdelegación del IMSS de Tehuacán.</p>
+        </div>
+    </footer>
+</div>
