@@ -2,4 +2,12 @@
     background-color: #611232 ; 
     color: #ffffff;
   }
+  .scroll-container {
+    max-height: 250px; /* Ajusta la altura según necesidad */
+    overflow-y: auto;  /* Habilita scroll vertical */
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f8f9fa; /* Color opcional para mejor visibilidad */
+  }
+  
   

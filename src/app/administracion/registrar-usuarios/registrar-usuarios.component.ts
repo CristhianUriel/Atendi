@@ -4,13 +4,13 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, FormsModule } 
 import { RouterModule } from '@angular/router';
 import { RegisterUserService } from '../../services/register-user.service';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { Models, ventanillasPorId, Users } from '../../models/models';
-
-
+import {  ventanillasPorId, Users, UsersUpdate } from '../../models/models';
+import { ButtonCustomComponent } from '../../custom/button-custom/button-custom.component';
+import { AlertService } from '../../services/alert.service';
 @Component({
   selector: 'app-registrar-usuarios',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, NgxPaginationModule, FormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, NgxPaginationModule, FormsModule,ButtonCustomComponent],
   templateUrl: './registrar-usuarios.component.html',
   styleUrl: './registrar-usuarios.component.css'
 })
@@ -23,16 +23,26 @@ export class RegistrarUsuariosComponent {
   page: number = 1; // Página inicial
   count = 1;
   form: FormGroup;
+  formUpdate: FormGroup
   searchText = ''
-  constructor(private fb: FormBuilder, private registrar: RegisterUserService) {
+  selectedUser: any= null
+  constructor(private fb: FormBuilder, private registrar: RegisterUserService , private alert: AlertService) {
 
     this.form = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s[a-zA-ZÀ-ÿ\u00f1\u00d1]+)*$/)]],
       userName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
       password: ['', [Validators.required]],
       rol: ['', Validators.required],
-      departamentoId: ['', Validators.required],
-      ventanillaId: ['', Validators.required],
+      departamentoId: ['', ],
+      ventanillaId: ['', ],
+    })
+    this.formUpdate = this.fb.group({
+      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s[a-zA-ZÀ-ÿ\u00f1\u00d1]+)*$/)]],
+      userName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
+      password: ['', [Validators.required]],
+      rol: ['', Validators.required],
+      departamentoId: ['', ],
+      ventanillaId: ['', ],
     })
   }
   ngOnInit() {
@@ -104,7 +114,12 @@ mostrarToast(mensaje: string) {
         response => {
           console.log("Registro exitoso:", response);
           // Mostrar el toast
-         this.mostrarToast("Usuario registrado con exito");
+         //this.mostrarToast("Usuario registrado con exito");
+         this.alert.showSuccess("registro")
+         const modal = document.getElementById('exampleModal') as HTMLElement;
+          if (modal) {
+            (modal.querySelector('[data-bs-dismiss="modal"]') as HTMLElement)?.click();
+          }
           this.form.reset({nombre: '',
             userName: '',
             password: '',
@@ -113,7 +128,8 @@ mostrarToast(mensaje: string) {
             ventanillaId: '', })
         },
         error => {
-          console.error("Error en el registro:", error);
+          console.log("Registro exitoso:", error);
+          this.alert.showError('Ocurrio un problema al registrar al usuario');
         }
       );
 
@@ -137,10 +153,40 @@ mostrarToast(mensaje: string) {
   }
   eliminarUser(id: string){
     this.registrar.deleteUser(id).subscribe(reponse=>{
-      this.mostrarToast("✅ Usuario eliminado")
+      this.alert.showSuccess("Se ha eliminado el usuario")
       this.cargarUsuarios()
     },error=>{
       this.mostrarToast("❌ Error en la eliminacion del departamento")
     })
   }
+  modalActualizarUsuario(usuario: any) {
+    this.selectedUser = { ...usuario }; // Clonamos el objeto usuario para evitar modificar el original
+  
+    // Verifica si los datos existen antes de asignarlos al formulario
+    this.formUpdate.setValue({
+      nombre: usuario.nombre || '', 
+      userName: usuario.userName || '',
+      password: '', // Normalmente no se debe prellenar la contraseña
+      rol: '',
+      departamentoId: usuario.departamentoId || '',
+      ventanillaId: usuario.ventanillaId || ''
+    });
+  }
+  actualizarUsuario() {
+    
+    const usuario: UsersUpdate = this.formUpdate.value;
+    const id = this.selectedUser.id;
+
+
+    console.log('Enviando datos:', id, usuario);
+    this.registrar.actualizarUsuario(id, usuario).subscribe(response=>{
+      this.alert.showSuccess("Usuario actualizado");
+      this.cargarUsuarios()
+    }, err =>{
+      this.alert.showError("Ocurrio un error")
+    } ); 
+  }
+
+ 
+
 }

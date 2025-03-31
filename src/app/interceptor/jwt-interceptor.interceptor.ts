@@ -6,7 +6,15 @@ import { Router } from '@angular/router';
 export const jwtInterceptorInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
   const authService = inject(AuthServiceService);
   const router = inject(Router);
-  const excludedUrls = ['http://localhost:8080/api/auth/login']; // Rutas excluidas
+    // Verifica si la URL es una conexión SSE (EventSource) y no aplica el interceptor
+    if (req.url.includes('/api/turnos/tomados/stream') && req.method === 'GET') {
+      return next(req); // Sin modificaciones, pasa la solicitud como está
+    }
+  
+  const excludedUrls = [
+    'http://localhost:8080/api/auth/login',
+    
+  ]; // Rutas excluidas
 
   // Verifica si la solicitud es para el login
   if (excludedUrls.some(url => req.url.includes(url))) {

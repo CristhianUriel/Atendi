@@ -7,7 +7,6 @@
 }
 .tittle{
  grid-column: 1 / 2; /* Ocupa ambas columnas */
-  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,16 +41,88 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
-.attend{
-    /* Ocupa la primera columna */
-  grid-row: 2 / 3; /* Segunda fila */
+/* .attend{
+    /* Ocupa la primera columna 
+  grid-row: 2 / 3; /* Segunda fila 
   
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: blanchedalmond;
     
+} */
+.attend {
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blanchedalmond;
+  position: relative;
+  padding: 10px;
+  overflow: hidden; /* Asegura que no haya desbordamiento si el video se sale */
 }
+
+.attend video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Se ajusta al contenedor sin deformarse */
+  max-width: 100%;
+  max-height: 100%;
+}
+/* Estilo del mensaje */
+.alert-message {
+  position: absolute;
+  top: 50%; /* Centrado verticalmente */
+  left: 50%; /* Centrado horizontalmente */
+  transform: translate(-50%, -50%); /* Ajuste preciso del centrado */
+  background-color: #611232; /* Fondo oscuro con más opacidad */
+  color: white;
+  padding: 20px 40px;
+  font-size: 28px;
+  font-weight: bold;
+  border-radius: 15px; /* Bordes más redondeados */
+  box-shadow: 0px 8px 20px rgba(255, 255, 255, 0.3); /* Sombra más visible */
+  z-index: 1000; /* Asegura que el mensaje esté en primer plano */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  animation: fadeIn 0.5s ease-in-out, slideDown 0.5s ease-in-out, fadeOut 0.5s ease-in-out 3s forwards;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Efecto de deslizamiento hacia abajo */
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -60%);
+  }
+  to {
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Animación de desaparición después de 3s */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+
+
+
 @media (max-width: 768px) {
     .container {
       grid-template-columns: 1fr; /* Una sola columna */

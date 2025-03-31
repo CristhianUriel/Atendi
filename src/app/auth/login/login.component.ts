@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthServiceService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
 import {jwtDecode} from 'jwt-decode';
-
+import { AlertService } from '../../services/alert.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -17,7 +17,7 @@ export class LoginComponent {
 
   HospitalId: string = '67aab2f8ca81b3d38f5b4e3f';
 
-  constructor(private fb: FormBuilder, private authService: AuthServiceService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthServiceService, private router: Router, private alert: AlertService) {
     this.form = this.fb.group({
       user: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
       password: ['', [Validators.required]]
@@ -50,6 +50,9 @@ export class LoginComponent {
               case 'recepcion':
                 this.router.navigate(['/recepcionista']);
                 break;
+                case 'ventanilla':
+                  this.router.navigate(['/ventanilla']);
+                  break;  
               default:
                 this.router.navigate(['/home']); // Si no tiene un rol válido
                 break;
@@ -61,7 +64,7 @@ export class LoginComponent {
           }
         },
         error: (err) => {
-          console.error('Error en el login:', err);
+          this.alert.showError('Credenciales invalidas, contacta con el adminstrador');
         }
       });
 

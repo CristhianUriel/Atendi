@@ -1,9 +1,13 @@
 <div class="d-flex flex-column vh-100">
   <!-- Header -->
   <header class="nav-recep text-white p-3">
-    <div class="container">
+    <div class="container-fluid mx-2 d-flex justify-content-between">
       <h1 class="h3">Atendí</h1>
+      <div class="">
+        <app-button-custom></app-button-custom>
+      </div>
     </div>
+
   </header>
 
   <!-- Contenido -->
@@ -13,25 +17,110 @@
         <div class="col-3 border text-start">
           <h6 class="mt-3">Selecciona un departamento para mostrar los procesos</h6>
           <div class="p-2">
-            <select class="form-select  form-select-md mb-3" aria-label="medium select example">
-            <option selected>Departamentos</option>
-            <option value="1">Afiliacion</option>
-            <option value="2">Cobranza</option>
-            <option value="3">Three</option>
-            
-          </select>
-          <select class="form-select" size="3" aria-label="Size 3 select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
+            <select class="form-select form-select-lg border-dark" id="departamento" formControlName="departamentoId"
+              (change)="onDepartamentoChange($event)" required>
+              <option value="" disabled selected>Seleccione un departamento</option>
+              <option *ngFor="let dep of departamentos" [value]="dep.id">{{ dep.nombre }}
+              </option>
+            </select>
+
+          </div>
         </div>
-        </div>
-        <div class="col-7 border">
+        <div class="col-7 border-start border-end border-black ">
           <h6 class="mt-3">En este apartado seleccione el proceso que realizara la visita</h6>
+          <div class="p-2">
+            <select class="form-select shadow-hover" size="10" aria-label="Size 10 select example"
+              *ngIf="OperacionesPorDepartamento.length > 0" (change)="onOperacionChange($event)">
+      
+              <option class="fs-5 border rounded-3 my-2 shadow-hover2"  *ngFor="let operacion of OperacionesPorDepartamento" [value]="operacion.id">
+                {{ operacion.nombre }}
+                
+              </option>
+            
+            </select>
+          </div>
         </div>
-        <div class="col-2 border"></div> 
+        <!-- Button trigger modal -->
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Imprimir ticket</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              
+              <div class="modal-body">
+                <div class="text-center" *ngIf="turno">
+                  
+                  <!-- Encabezado con margen y color llamativo -->
+                  <h5 class="text-primary fw-bold mb-3">🎫 Detalles del Turno</h5>
+              
+                  <!-- Tarjeta para mejorar la presentación -->
+                  <div class="card shadow-sm p-3">
+                    <div class="card-body">
+                      <p class="fs-5"><strong>Número:</strong> <span class="text-success">{{ turno.numeroTurno }}</span></p>
+                      <p class="fs-6"><strong>Operación:</strong> {{ turno.tipoOperacionNombre }}</p>
+              
+                      <!-- Selector de impresora estilizado -->
+                      <div class="mb-3">
+                        <label for="impresora" class="form-label fw-bold">📠 Seleccionar Impresora:</label>
+                        <select class="form-select" id="impresora" (change)="onImpresoraChange($event)">
+                          <option disabled selected>Seleccionar impresora</option>
+                          <option *ngFor="let impresora of impresoras" [value]="impresora">
+                            {{ impresora }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+              
+                  <!-- Botones con espaciado y alineación -->
+                  <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                      ❌ Cerrar
+                    </button>
+                    <button class="btn btn-primary px-4" (click)="imprimirTurno2(turno.id)">
+                      🖨️ Impresora de tinta
+                    </button>
+                  </div>
+              
+                </div>
+              </div>
+              
+
+            </div>
+          </div>
+        </div>
+        <div class="col-2 border">
+          <div class="col-3 w-100 mt-3 text-center d-flex flex-column align-items-center justify-content-center">
+
+            <div class="card w-100 shadow-hover"> <!-- Asegurar que ocupe todo el ancho -->
+              <div class="card-body text-center w-100">
+                <h6 class="text-primary w-100 fw-bold">✅ Turno Generado</h6>
+                <hr>
+                <div class="d-grid gap-2" *ngIf="turno">
+                  <p class="fs-5"><strong>Número:</strong> <span class="text-success">{{ turno.numeroTurno }}</span></p>
+                  <p><strong>Operación:</strong> {{ turno.tipoOperacionNombre }}</p>
+                  <p><i class="bi bi-clock"></i> <strong>Estado:</strong> {{ turno.estado }}</p>
+
+                  <button class="btn btn-primary w-100" (click)="imprimirTurno()">
+                    🖨️ Impresora de Tinta
+                  </button>
+                  <button type="button" class="btn btn-secondary w-100" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    🖨️ Impresora Térmica
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
       </div>
     </div>
   </main>

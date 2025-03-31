@@ -68,6 +68,9 @@ export class RegisterProcessService {
     console.log(ventanilla);  // Asegúrate de que los datos son correctos
     return this.http.put(`${this.apiUri}/ventanillas-catalogo/${id}`, ventanilla);
   }
-  
+  actualizarDepartamento(id: string, departamento: Departamento): Observable<any> {
+    console.log(departamento);  // Asegúrate de que los datos son correctos
+    return this.http.put(`${this.apiUri}/departamentos/${id}`, departamento);
+  }
  
 }

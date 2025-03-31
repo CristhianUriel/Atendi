@@ -1,4 +1,46 @@
 .collapse.show {
     display: block !important;
   }
+/* dashboard.component.css */
+
+.chart-container {
+  width: 100%; /* El contenedor toma el 100% del ancho disponible */
+  overflow-x: auto; /* Habilita el scroll horizontal */
+  padding: 10px 0; /* Espaciado opcional */
+}
+#myChart {
+  width: 100%;  /* Ajusta al 100% del contenedor */
+  height: 420px; /* Ajusta la altura */
   
+}
+.chart-container2 {
+  width: 100%; /* El contenedor toma el 100% del ancho disponible */
+  overflow-x: auto; /* Habilita el scroll horizontal */
+  padding: 10px 0; /* Espaciado opcional */
+}
+
+#myChartUser {
+  width: 100%; /* Ajusta el gráfico al 100% del contenedor */
+  height: 420px; /* Ajusta la altura */
+  min-width: 800px; /* Establece un tamaño mínimo para el gráfico */
+}
+
+.chart-container3 {
+  width: 100%; /* El contenedor toma el 100% del ancho disponible */
+  overflow-x: auto; /* Habilita el scroll horizontal */
+  padding: 10px 0; /* Espaciado opcional */
+}
+#myChartDeps {
+  width: 100%;  /* Ajusta al 100% del contenedor */
+  height: 420px; /* Ajusta la altura */
+  
+}
+#myChartOps {
+  width: 100%;  /* Ajusta al 100% del contenedor */
+  height: 300px; /* Ajusta la altura */
+  
+}
+.grafico-container {
+  padding: 0;
+  margin: 0 auto;
+}

@@ -23,10 +23,7 @@
                                 class="bi bi-file-earmark-plus-fill fs-5"></i> Registrar procesos , ventanillas y
                             departamentos</a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" routerLink="/departamentos" href="#"><i
-                                class="bi bi-person-badge-fill fs-5"></i> Registrar ventanilla</a>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -41,8 +38,7 @@
                 <span class="navbar-toggler-icon"> <i class="bi bi-list " style="font-size: 1.4rem;"></i></span>
             </button>
 
-            <button class="btn " style="color: #ffffff;">Cerrar sesión <i class="bi bi-box-arrow-in-right"
-                    style="font-size: 1.4rem;"></i> </button>
+            <app-button-custom></app-button-custom>
 
         </div>
 
@@ -52,7 +48,7 @@
         <div class="container-fluid  mt-1">
             <h2 class="text-center">Formularios de registro</h2>
             <div class="container-fluid">
-                <p><strong>Nota:</strong>Primero, es necesario registrar el departamento y las ventanillas antes de
+                <p><strong>Nota:</strong>Primero, es necesario registrar los procesos y las ventanillas antes de
                     proceder con la generación de los departamentos.</p>
             </div>
             <!-- Button trigger modal -->
@@ -78,7 +74,7 @@
             <!-- Modal departamento -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog  modal-xl modal-dialog-scrollable">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario de registro</h1>
@@ -93,7 +89,9 @@
                                             placeholder="Ingrese el nombre del departamento">
                                     </div>
 
-                                    <div class="col-6 border">
+                                    <!-- Contenedor con scroll para Operaciones -->
+                                    <div class="col-6 border scroll-container">
+                                        <h1 class="text-center">Operaciones</h1>
                                         <div class="form-check" *ngFor="let proceso of filteredProcesos">
                                             <input class="form-check-input" type="checkbox" [value]="proceso.id"
                                                 [checked]="isOperacionSelected(proceso.id)"
@@ -104,8 +102,9 @@
                                         </div>
                                     </div>
 
-
-                                    <div class="col-6 border">
+                                    <!-- Contenedor con scroll para Ventanillas -->
+                                    <div class="col-6 border scroll-container">
+                                        <h1 class="text-center">Ventanillas</h1>
                                         <div class="form-check" *ngFor="let ventanilla of filteredVentanillas">
                                             <input class="form-check-input" type="checkbox" [value]="ventanilla.id"
                                                 [checked]="isVentanillaSelected(ventanilla.id)"
@@ -116,7 +115,6 @@
                                         </div>
                                     </div>
 
-
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Cerrar</button>
@@ -125,14 +123,11 @@
                                     </div>
                                 </div>
                             </form>
-
-
                         </div>
-
                     </div>
-
                 </div>
             </div>
+
             <!---Modal 2 proceso-->
             <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -146,8 +141,7 @@
                             <form [formGroup]="procesosForm" (ngSubmit)="enviarFormulario()">
                                 <div class="row justify-content-center">
                                     <div class="mb-3">
-                                        <label for="nombre" class="form-label">Nombre del
-                                            Departamento</label>
+                                        <label for="nombre" class="form-label">Nombre de la operacion o proceso</label>
                                         <input type="text" id="nombre" class="form-control" formControlName="nombre"
                                             placeholder="Ingrese el nombre del proceso">
                                     </div>
@@ -178,8 +172,7 @@
                             <form [formGroup]="ventanillaForm" (ngSubmit)="registrarVentanillas()">
                                 <div class="row justify-content-center">
                                     <div class="mb-3">
-                                        <label for="nombre" class="form-label">Nombre del
-                                            Departamento</label>
+                                        <label for="nombre" class="form-label">Nombre de la ventanilla</label>
                                         <input type="text" id="nombre" class="form-control" formControlName="nombre"
                                             placeholder="Ingrese el nombre del ventanilla">
                                     </div>
@@ -206,11 +199,10 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form [formGroup]="procesosForm">
+                            <form [formGroup]="procesosForm2">
                                 <div class="row justify-content-center">
                                     <div class="mb-3">
-                                        <label for="nombre" class="form-label">Nombre del
-                                            Departamento</label>
+                                        <label for="nombre" class="form-label">Nombre de la operacion o proceso</label>
                                         <input type="text" id="nombre" class="form-control" formControlName="nombre"
                                             placeholder="Ingrese el nombre del proceso">
                                     </div>
@@ -237,45 +229,89 @@
                         <div class="modal-body">
                             <form [formGroup]="ventanillaForm2">
                                 <div class="row justify-content-center">
-                                  <div class="mb-3">
-                                    <label for="nombre" class="form-label">Nombre del Departamento</label>
-                                    <input
-                                      type="text"
-                                      id="nombre"
-                                      class="form-control"
-                                      formControlName="nombre"
-                                      placeholder="Ingrese el nombre de la ventanilla"
-                                    />
-                                  </div>
-                              
-                                  <!-- Checkbox para 'activo' -->
-                                  <div class="mb-3">
-                                    <label for="activo" class="form-label">Activo</label>
-                                    <input
-                                      type="checkbox"
-                                      id="activo"
-                                      class="form-check-input"
-                                      formControlName="activo" 
-                                    />
-                                  </div>
-                              
-                                  <button
-                                    type="submit"
-                                    class="btn btn-success"
-                                    [disabled]="!ventanillaForm2.valid"
-                                    (click)="actualizarVentanilla()"
-                                  >
-                                    Guardar
-                                  </button>
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre de la ventanilla</label>
+                                        <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                                            placeholder="Ingrese el nombre de la ventanilla" />
+                                    </div>
+
+                                    <!-- Checkbox para 'activo' -->
+                                    <div class="mb-3">
+
+                                        <input type="checkbox" id="activo" class="form-check-input "
+                                            formControlName="activo" />
+                                        <label for="activo" class="form-label "> Activo</label>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success" [disabled]="!ventanillaForm2.valid"
+                                        (click)="actualizarVentanilla()">
+                                        Guardar
+                                    </button>
                                 </div>
-                              </form>
-                              
-                              
+                            </form>
+
+
 
                         </div>
 
                     </div>
 
+                </div>
+            </div>
+            <!--Modal update departamentos-->
+            <div class="modal fade" id="exampleModalUpdate3" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario de registro</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="departamentoForm2" >
+                                <div class="row justify-content-center">
+                                    <div class="mb-3 col-12">
+                                        <label for="nombre" class="form-label">Nombre del Departamento</label>
+                                        <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                                            placeholder="Ingrese el nombre del departamento">
+                                    </div>
+
+                                    <!-- Contenedor con scroll para Operaciones -->
+                                    <div class="col-6 border scroll-container">
+                                        <h1 class="text-center">Operaciones</h1>
+                                        <div class="form-check" *ngFor="let proceso of filteredProcesos">
+                                            <input class="form-check-input" type="checkbox" [value]="proceso.id"
+                                                [checked]="isOperacionSelected(proceso.id)"
+                                                (change)="onCheckboxChangeForUpdate($event, 'operacionesIds')">
+                                            <label class="form-check-label">
+                                                {{ proceso.nombre }}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Contenedor con scroll para Ventanillas -->
+                                    <div class="col-6 border scroll-container">
+                                        <h1 class="text-center">Ventanillas</h1>
+                                        <div class="form-check" *ngFor="let ventanilla of filteredVentanillas">
+                                            <input class="form-check-input" type="checkbox" [value]="ventanilla.id"
+                                                [checked]="isVentanillaSelected(ventanilla.id)"
+                                                (change)="onCheckboxChangeForUpdate($event, 'ventanillasIds')">
+                                            <label class="form-check-label">
+                                                {{ ventanilla.nombre }}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-success"
+                                            [disabled]="!departamentoForm2.valid" (click)="actualizarDepartamentos()" >Guardar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div role="tabpanel border">
@@ -291,7 +327,7 @@
                         <a class="nav-link" data-bs-toggle="tab" href="#messages" role="tab">Registrar departamentos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#settings" role="tab">Settings</a>
+                        <a class="nav-link" data-bs-toggle="tab" href="#settings" role="tab">Videos para mostrar</a>
                     </li>
                 </ul>
 
@@ -376,7 +412,7 @@
                                             placeholder="Buscar por nombre"></div>
 
                                     <!-- Botón para actualizar datos -->
-                                    <button type="button" class="btn btn-primary" (click)="actualizarDatos()" >
+                                    <button type="button" class="btn btn-primary" (click)="actualizarDatos()">
                                         <i class="bi bi-arrow-clockwise"></i> Actualizar
                                     </button>
                                 </div>
@@ -391,8 +427,8 @@
                                         <th>ID</th>
                                         <th>Ventanillas</th>
 
-                                        <th colspan="1">Asignar</th>
-                                        <th colspan="2">Acciones</th>
+
+                                        <th colspan="2" class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -401,10 +437,10 @@
 
                                         <td>{{i + 1 + (pagev - 1) * 5}}</td>
                                         <td>{{ventanillas.nombre}}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td> <button type="button" class="btn btn-warning" (click)="modalActualizarVentanilla(ventanillas)" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModalUpdate2" ><i
+
+                                        <td> <button type="button" class="btn btn-warning"
+                                                (click)="modalActualizarVentanilla(ventanillas)" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalUpdate2"><i
                                                     class="bi bi-pencil-square"></i></button></td>
                                         <td><button type="button" class="btn btn-danger"
                                                 (click)="eliminarVe(ventanillas.id)"><i
@@ -461,7 +497,9 @@
                                         <td>{{i+1+(pageD-1)*5}}</td>
                                         <td>{{departamentos.nombre}}</td>
                                         <td>{{ getNombresVentanillas(departamentos) }}</td>
-                                        <td> <button type="button" class="btn btn-warning"><i
+                                        <td> <button type="button" class="btn btn-warning"
+                                                (click)="modalActualizarDepartamentos(departamentos)"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModalUpdate3"><i
                                                     class="bi bi-pencil-square"></i></button></td>
                                         <td><button type="button" class="btn btn-danger"
                                                 (click)="eliminarDe(departamentos.id)"><i
@@ -476,7 +514,57 @@
                             </pagination-controls>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="settings" role="tabpanel">Contenido de Settings</div>
+                    <!--Videos-->
+                    <div class="tab-pane fade" id="settings" role="tabpanel">
+                        <div class="col-md-12 mb-3">
+                            <form [formGroup]="videoform" (ngSubmit)="subirVideo()">
+                                <div class="row">
+                                  <!-- Campo de selección de video -->
+                                  <div class="col-md-9">
+                                    <label for="video" class="form-label">Selecciona un video</label>
+                                    <input type="file" id="file" class="form-control" (change)="seleccionarArchivo($event)" required>
+                                  </div>
+                              
+                                  <!-- Botón de subida alineado con el input -->
+                                  <div class="col-md-3 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100" [disabled]="!archivoSeleccionado">Subir video</button>
+                                  </div>
+                                </div>
+                              </form>
+                              
+                              
+                              
+                              
+                            
+
+                        </div>
+                        <table class="table table-striped table-bordered ">
+                            <thead class="table-dark">
+                              <tr>
+                                <th>ID</th>
+                                <th>Videos</th>
+                                <th>Acciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let video of filteredVideos | paginate: { id: 'videos',itemsPerPage: 5, currentPage: pageVid }; let i = index">
+                                <td>{{ video.id }}</td>
+                                <td>{{ video.nombre }}</td>
+                                <td>
+                                  <button type="button" class="btn btn-danger" (click)="eliminarVideo(video.nombre)">
+                                    <i class="bi bi-trash3-fill"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          
+                        <!-- Paginador de ngx-pagination con Bootstrap -->
+                        <pagination-controls class="d-flex justify-content-center" id="videos"
+                            (pageChange)="pageVid = $event">
+                        </pagination-controls>
+
+                    </div>
                 </div>
             </div>
 

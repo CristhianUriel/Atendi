@@ -23,7 +23,6 @@ export class RegisterUserService {
           'Content-Type': 'application/json', // Asegura que los datos se envíen como JSON
           
         })
-      
         const body = JSON.stringify({hospitalId , user }); // Convierte los datos a JSON
         console.log("Datos recibidos del formulario: ", body);
         console.log("Datos recibidos del formulario: ", url);
@@ -67,5 +66,8 @@ export class RegisterUserService {
   }
   consultarVentanilla(ventanillasIds: string[]): Observable<ventanillasPorId[]> {
     return this.http.post<ventanillasPorId[]>(`${this.apiUri}/ventanillas-catalogo/ventanillas-ids`, ventanillasIds);
+  }
+  actualizarUsuario(id: string, datos: any): Observable<any> {
+    return this.http.put(`${this.apiUri}/usuarios/${id}`, datos);
   }
 }

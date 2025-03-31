@@ -10,11 +10,13 @@ import { AtencionComponent } from './atencion/atencion/atencion.component';
 
 export const routes: Routes = [
     {
-        path: '', component: HomeComponent
+        path: '', component: LoginComponent
     },
     
     {
-        path: 'home' , component: HomeComponent
+        path: 'home' , component: HomeComponent,
+        canActivate:[authGuardGuard],
+        data:{role: 'MostrarTurnos'}
     },
     {
         path: 'login', component: LoginComponent
@@ -40,7 +42,8 @@ export const routes: Routes = [
         data: {role: 'ADMINISTRADOR'}
     },{
         path: 'ventanilla', component:AtencionComponent,
-       
+        canActivate: [authGuardGuard],
+        data: {role: 'ventanilla'}
     },
-    { path: '**', component: HomeComponent },
+    { path: '**', component: LoginComponent },
 ];
