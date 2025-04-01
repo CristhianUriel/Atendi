@@ -3,14 +3,15 @@ import { Injectable, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { ApiUrlService } from './api-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraficasService  {
-  private apiUri = environment.apiUri
+ // private apiUri = environment.apiUri
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private apiUrlService: ApiUrlService) {
 
   }
   getHospitalId(): string {
@@ -22,17 +23,17 @@ export class GraficasService  {
     return '';
   }
   obtenerTurnosPorFecha(hospitalId: string,fechaInicio: string, fechaFin: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUri}/reportes/fecha?hospitalId=${hospitalId}&inicio=${fechaInicio}&fin=${fechaFin}`);
+    return this.http.get<any[]>(`${this.apiUrlService.getApiUrl()}/api/reportes/fecha?hospitalId=${hospitalId}&inicio=${fechaInicio}&fin=${fechaFin}`);
   }
   obtenerTurnosPorUsers(usuarioId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUri}/reportes/usuario?usuarioId=${usuarioId}`);
+    return this.http.get<any[]>(`${this.apiUrlService.getApiUrl()}/api/reportes/usuario?usuarioId=${usuarioId}`);
   }
   obtenerTurnosPorDepartamentos(hospitalId: string,departamentoId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUri}/reportes/departamento?hospitalId=${hospitalId}&departamentoId=${departamentoId}`);
+    return this.http.get<any[]>(`${this.apiUrlService.getApiUrl()}/api/reportes/departamento?hospitalId=${hospitalId}&departamentoId=${departamentoId}`);
 
   }
   obtenerTurnosPorOperaciones(hospitalId: string,operacionId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUri}/reportes/tipo-operacion?hospitalId=${hospitalId}&tipoOperacion=${operacionId}`);
+    return this.http.get<any[]>(`${this.apiUrlService.getApiUrl()}/api/reportes/tipo-operacion?hospitalId=${hospitalId}&tipoOperacion=${operacionId}`);
 
   }
 }

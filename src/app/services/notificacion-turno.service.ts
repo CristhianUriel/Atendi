@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { ApiUrlService } from './api-url.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,11 @@ export class NotificacionTurnoService {
   private isClosing = false; 
   private reconnectionAttempts = 0; // Contador de reintentos
   private maxReconnectionAttempts = 5; // Límite de intentos de reconexión
+ // private apiUri = environment.apiUri;
 
-  constructor() {}
+  constructor(private apiUrlService: ApiUrlService) {
+
+  }
 
   conectarTurnosTomados() {
     if (this.eventSource) {
@@ -22,7 +27,7 @@ export class NotificacionTurnoService {
     this.isClosing = false; 
     this.reconnectionAttempts = 0; // Reiniciar intentos
 
-    const url = `http://localhost:8080/api/turnos/tomados/stream`;
+    const url = `${this.apiUrlService.getApiUrl()}/api/turnos/tomados/stream`;
     console.log("🔌 Iniciando conexión de turnos tomados...");
 
     this.eventSource = new EventSource(url);

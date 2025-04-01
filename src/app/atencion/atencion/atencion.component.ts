@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ButtonCustomComponent } from '../../custom/button-custom/button-custom.component';
 import { CommonModule } from '@angular/common';
-
+import { RecepcionService } from '../../services/recepcion.service';
 import { TurnoWebSocketServiceService } from '../../services/turno-web-socket-service.service';
 import { AtencionService } from '../../services/atencion.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

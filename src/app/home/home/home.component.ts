@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
-
+import { inject } from '@angular/core';
 import { TurnoWebSocketServiceService } from '../../services/turno-web-socket-service.service';
 import { NotificacionTurnoService } from '../../services/notificacion-turno.service';
 import { VideosService } from '../../services/videos.service';
@@ -10,7 +10,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription,map,startWith,bufferTime } from 'rxjs';
 import { FullScreenAlertComponent } from '../../custom/full-screen-alert/full-screen-alert.component';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { TurnoDTO } from '../../models/models';
+import { ApiUrlService } from '../../services/api-url.service';
 
 @Component({
   selector: 'app-home',
@@ -29,18 +30,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   turnoSubscription: Subscription = new Subscription(); // Para almacenar la suscripción
   cargando: boolean = true
   idsEliminados: Set<string> = new Set();
-
+  baseUrl: string;
+  currentVideoUrl: string;
+  videoIndex = 0;
   constructor(
     private turnoService: TurnoWebSocketServiceService,
     private notificacion: NotificacionTurnoService,
     private videoService: VideosService,
     private sanitizer: DomSanitizer,
-    private cdRef: ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef,
+    private apiUrlService: ApiUrlService
+  ) { 
+    this.baseUrl = `${this.apiUrlService.getApiUrl()}/videos/stream/`; // Endpoint del backend
+    this.currentVideoUrl = this.baseUrl + this.videoIndex; // Asignación de currentVideoUrl
+  }
 
   @ViewChild('videoPlayer', { static: false }) videoPlayer!: ElementRef<HTMLVideoElement>;
-  videoIndex = 0;
-  baseUrl = "http://localhost:8080/videos/stream/"; // Endpoint del backend
-  currentVideoUrl = this.baseUrl + this.videoIndex;
+  
+  
+ 
 
   ngAfterViewInit() {
     this.loadVideo();
@@ -48,56 +56,47 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
-
     const token = localStorage.getItem('token');
     if (token) {
       // Llamar al método de conexión SSE con el token
       this.notificacion.conectarTurnosTomados();
       this.turnoService.conectarGlobal(token);
-      
+  
       this.turnoService.turnosGlobales$.pipe(
-        map((turnos: any[]) => { // Aquí especificamos que 'turnos' es un array de 'TurnoDTO'
+        map((turnos: any[]) => {
           // Filtrar los turnos eliminados y agregarlos a un set para su posterior verificación
           const idsEliminados = new Set(
             turnos.filter(turno => turno.estado === 'eliminado').map(turno => turno.id)
           );
       
+          // Normalizar timestamps a segundos (o algún otro criterio de igualdad)
+          const turnosNormalizados = turnos.map(turno => ({
+            ...turno,
+            timestamp: Math.floor(new Date(turno.timestamp).getTime() / 1000) // Truncar a segundos
+          }));
+      
           // Filtrar los turnos pendientes, excluyendo aquellos cuyo id esté en el set de eliminados
-          const turnosFiltrados = turnos.filter(turno => 
+          const turnosFiltrados = turnosNormalizados.filter(turno => 
             turno.estado === 'pendiente' && !idsEliminados.has(turno.id)
           );
       
-          return { turnosFiltrados, idsEliminados };
+          // Eliminar duplicados usando un Map con el ID del turno como clave
+          const turnosUnicos = Array.from(
+            new Map(turnosFiltrados.map(turno => [turno.id, turno])).values()
+          );
+      
+          return { turnosFiltrados: turnosUnicos, idsEliminados };
         })
       ).subscribe(({ turnosFiltrados, idsEliminados }) => {
-        // Mostrar spinner solo si estamos procesando los turnos
         this.cargando = true;
       
-        // Usamos un setTimeout para simular un breve proceso de actualización, de modo que el spinner se vea un poco más
         setTimeout(() => {
-          // Ahora aseguramos que solo se muestren los turnos pendientes luego de que se hayan procesado los eliminados
           this.idsEliminados = idsEliminados;
-          this.turnos = turnosFiltrados; // Asignamos los turnos filtrados a la vista
-          this.cargando = false; // Ocultamos el spinner después de actualizar
+          this.turnos = turnosFiltrados; // Ahora sin duplicados
+          this.cargando = false;
         }, 500);
       });
       
-      // Suscribirse a los turnos tomados (IMPORTANTE: Reactivar la suscripción)
-      this.turnoSubscription = this.notificacion.getTurnoTomadoObservable().subscribe(turno => {
-        console.log("📩 Turno tomado recibido:", turno);
-        this.recibirTurnoTomado(turno); // Lógica para recibir y manejar el turno tomado
-      });
-      
-      
-      // Suscribirse a los turnos tomados (IMPORTANTE: Reactivar la suscripción)
-      this.turnoSubscription = this.notificacion.getTurnoTomadoObservable().subscribe(turno => {
-        console.log("📩 Turno tomado recibido:", turno);
-        this.recibirTurnoTomado(turno);
-      });
-      
-      
-
       // Suscribirse a los turnos tomados (IMPORTANTE: Reactivar la suscripción)
       this.turnoSubscription = this.notificacion.getTurnoTomadoObservable().subscribe(turno => {
         console.log("📩 Turno tomado recibido:", turno);
@@ -107,6 +106,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.error('Token no encontrado en localStorage');
     }
   }
+  
 
   loadVideo() {
     fetch(this.currentVideoUrl, {
@@ -175,8 +175,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Eliminar el turno de la lista de turnos
   removeTurnoFromList(turno: any) {
+    // Agregar el ID del turno eliminado a la lista de eliminados
+    this.idsEliminados.add(turno.id);
+  
+    // Filtrar la lista para excluir el turno eliminado
     this.turnos = this.turnos.filter(t => t.id !== turno.id);
   }
+  
   logout() {
     console.log('🔴 Cerrando sesión...');
 

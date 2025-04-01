@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+
 import { HttpClient } from '@angular/common/http';
 import { Observable,map,catchError,throwError } from 'rxjs';
+import { ApiUrlService } from './api-url.service';
 @Injectable({
   providedIn: 'root'
 })
 export class VideosService {
 
-    // URL de tu API
-
-  constructor(private http: HttpClient) { }
+   
+  constructor(
+    private http: HttpClient,
+    private apiUrlService: ApiUrlService
+  ) { }
   getVideos(): Observable<string[]> {
-    return this.http.get('http://localhost:8080/videos/names', { responseType: 'text' }).pipe(
+    return this.http.get(`${this.apiUrlService.getApiUrl()}/videos/names`, { responseType: 'text' }).pipe(
       map(response => {
         try {
           return JSON.parse(response); // Si la respuesta es un JSON válido, lo devuelve directamente
@@ -28,13 +31,13 @@ export class VideosService {
   }
    // Método para eliminar un video por su ID
    eliminarVideos(VideoName: string): Observable<string> {
-    const url = `http://localhost:8080/videos/${VideoName}`;
+    const url = `${this.apiUrlService.getApiUrl()}/videos/${VideoName}`;
     return this.http.delete(url, { responseType: 'text' });
   }
   
    // Método para subir un video
    subirVideo(formData: FormData): Observable<string> {
-    const url = `http://localhost:8080/videos/upload`;
+    const url = `${this.apiUrlService.getApiUrl()}/videos/upload`;
     return this.http.post(url, formData, { responseType: 'text'  });
   }
   

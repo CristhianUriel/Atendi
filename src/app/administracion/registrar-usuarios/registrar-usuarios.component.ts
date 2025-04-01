@@ -115,6 +115,7 @@ mostrarToast(mensaje: string) {
           console.log("Registro exitoso:", response);
           // Mostrar el toast
          //this.mostrarToast("Usuario registrado con exito");
+         this.cargarUsuarios();
          this.alert.showSuccess("registro")
          const modal = document.getElementById('exampleModal') as HTMLElement;
           if (modal) {

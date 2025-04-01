@@ -4,20 +4,25 @@ import { Observable, tap } from 'rxjs';
 import {jwtDecode} from 'jwt-decode';
 import { ventanillasPorId, Users } from '../models/models';
 import { environment } from '../../environments/environment';
+import { ApiUrlService } from './api-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterUserService {
-  private apiUri = environment.apiUri;
-  constructor(private http: HttpClient) { 
+  //private apiUri = environment.apiUri;
+  constructor(
+    private http: HttpClient,
+    private apiUrlService: ApiUrlService
+
+  ) { 
 
   }
 
   registrar(hospitalId: string, user: Users){
      // 🔍 Verifica si los datos son correctos
       
-        const url = `${this.apiUri}/usuarios`;
+        const url = `${this.apiUrlService.getApiUrl()}/api/usuarios`;
       
         const headers = new HttpHeaders({
           'Content-Type': 'application/json', // Asegura que los datos se envíen como JSON
@@ -39,35 +44,35 @@ export class RegisterUserService {
 
   getUsuarios(): Observable<any[]>{
    
-    const url = `${this.apiUri}/usuarios`;
+    const url = `${this.apiUrlService.getApiUrl()}/api/usuarios`;
     return this.http.get<any[]>(url)
   }
 
   getDepartamentos(): Observable<any[]>{
-    const url = `${this.apiUri}/departamentos`;
+    const url = `${this.apiUrlService.getApiUrl()}/api/departamentos`;
     return this.http.get<any[]>(url)
   }
   getVentanillas(): Observable<any[]>{
-    const url = `${this.apiUri}/ventanillas-catalogo`;
+    const url = `${this.apiUrlService.getApiUrl()}/api/ventanillas-catalogo`;
     return this.http.get<any[]>(url)
   }
   
 
   // Obtener un departamento por su ID
   obtenerDepartamentoPorId(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUri}/departamentos/${id}`);
+    return this.http.get<any>(`${this.apiUrlService.getApiUrl()}/api/departamentos/${id}`);
   }
   getVentanillasPorDepartamento(ventanillasIds: string[]): Observable<ventanillasPorId[]> {
-    return this.http.post<ventanillasPorId[]>(`${this.apiUri}/ventanillas-catalogo/ventanillas-ids`, ventanillasIds);
+    return this.http.post<ventanillasPorId[]>(`${this.apiUrlService.getApiUrl()}/api/ventanillas-catalogo/ventanillas-ids`, ventanillasIds);
   }
   deleteUser(id: string){
-    const url = `${this.apiUri}/usuarios/${id}`;
+    const url = `${this.apiUrlService.getApiUrl()}/api/usuarios/${id}`;
     return this.http.delete(url)
   }
   consultarVentanilla(ventanillasIds: string[]): Observable<ventanillasPorId[]> {
-    return this.http.post<ventanillasPorId[]>(`${this.apiUri}/ventanillas-catalogo/ventanillas-ids`, ventanillasIds);
+    return this.http.post<ventanillasPorId[]>(`${this.apiUrlService.getApiUrl()}/api/ventanillas-catalogo/ventanillas-ids`, ventanillasIds);
   }
   actualizarUsuario(id: string, datos: any): Observable<any> {
-    return this.http.put(`${this.apiUri}/usuarios/${id}`, datos);
+    return this.http.put(`${this.apiUrlService.getApiUrl()}/api/usuarios/${id}`, datos);
   }
 }

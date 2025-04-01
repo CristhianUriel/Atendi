@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { BehaviorSubject } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-
+import { environment } from '../../environments/environment';
+import { ApiUrlService } from './api-url.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,13 +19,14 @@ export class TurnoWebSocketServiceService  {
   private reconnectInterval: any; // Para manejar el intervalo de reconexión
   private isReconnecting: boolean = false; // Estado para evitar reconexiones simultáneas
 
-  constructor() {}
+  constructor(private apiUrlService: ApiUrlService
+  ) {}
 
   conectarGlobal(token2: string) {
     console.log("Iniciando WebSocket...");
 
     this.socket = webSocket({
-      url: `ws://localhost:8080/api/turnos/stream/global`,
+      url: `${this.apiUrlService.getApiUrlWs()}/api/turnos/stream/global`,
       deserializer: (e: MessageEvent) => e.data,  // Desactivar la deserialización automática
       openObserver: {
         next: () => {
@@ -113,7 +115,7 @@ export class TurnoWebSocketServiceService  {
     }
 
     this.socket = webSocket({
-      url: `ws://localhost:8080/api/turnos/stream/departamento`,
+      url: `${this.apiUrlService.getApiUrlWs()}/api/turnos/stream/departamento`,
       deserializer: (e: MessageEvent) => e.data,
       openObserver: {
         next: () => {
